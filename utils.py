@@ -2,21 +2,12 @@ from curses.ascii import isdigit
 from random import randint
 from art import *
 
-def play():
-    cards = ['1','2','3','4','5','6','7','8','9','10','J','Q','K','A']
-    x = 0
-    for value in cards:
-        if x < 42:
-            cards.append(value)
-        else:
-            break
-        x += 1
-    
-    print(cards)
+def play(cards):
     points = 0
     dealer_points = 0
     hand = []
     dealer_hand = []
+
     print("Here is the dealer's first card:")
     get_card_dealer(cards, dealer_hand)
     print("Here is your hand:")
@@ -56,14 +47,12 @@ def play():
 
 def get_card_dealer(cards, dealer_hand):
 
-    card = cards[randint(len(cards))]
-    cards.pop(card)
-    print(cards)
-    dealer_hand.append(card)
+    dealer_hand = pop_card(cards, dealer_hand)
+
     if len(dealer_hand) < 2:
         for c in range(len(dealer_hand)):
             tprint(dealer_hand[c],font="block",chr_ignore=True)
-            tprint(" ",font="block",chr_ignore=True)
+            tprint(".",font="block",chr_ignore=True)
     else:
         for c in range(len(dealer_hand)):
             tprint(dealer_hand[c],font="block",chr_ignore=True)
@@ -73,20 +62,23 @@ def get_card(cards, hand):
 
     if len(hand) < 2:
         for i in range(2):
-            card = cards[randint(0,13)]
-            hand.append(card)
+            hand = pop_card(cards, hand)
     else:
-        card = cards[randint(0,13)]
-        hand.append(card)
+        hand = pop_card(cards, hand)
 
     for c in range(len(hand)):
         tprint(hand[c],font="block",chr_ignore=True)
     return hand
 
 
+def pop_card(cards, hand):
+    position = randint(0,len(cards))
+    card = cards[position]
+    cards.pop(position)
+    hand.append(card)
+    return hand
+
 def convert(hand, points):
-    print(points)
-    print(hand)
     if points > 0:
         if hand[-1].isdigit():
             c = int(hand[-1])
@@ -97,7 +89,6 @@ def convert(hand, points):
                 c = 11
             else:
                 c = 1
-        print(c)
         points += c
     else:
         for c in hand:
@@ -110,9 +101,7 @@ def convert(hand, points):
                     c = 11
                 else:
                     c = 1
-            print(c)
             points += c
-    print(points)
     return points
 
 def decision(points, dealer_points):
