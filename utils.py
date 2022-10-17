@@ -1,6 +1,7 @@
 from curses.ascii import isdigit
 from random import randint
 from art import *
+import time
 
 def play(cards):
     points = 0
@@ -10,6 +11,7 @@ def play(cards):
 
     print("Here is the dealer's first card:")
     get_card_dealer(cards, dealer_hand)
+    print("-------------------------------------")
     print("Here is your hand:")
     get_card(cards, hand)
     points = convert(hand, points)
@@ -26,21 +28,39 @@ def play(cards):
             get_card(cards, hand)
             points = convert(hand, points)
             if points > 21:
-                print("You have more than 21, you lost")
-                print("1: Replay    2: Quit")
+                print("you have more than 21!")
+                tprint("YOU LOST")
                 exit()
-            win = decision(points, dealer_points)
-            if win:
-                print(f"You won with {points} against the dealer's {dealer_points}")
                 
         elif answer == "2":
-            print("Here is the dealer's hand")
-            get_card_dealer(cards, dealer_hand)
-            dealer_points = convert(dealer_hand, dealer_points)
-            if dealer_points > 21:
-                print("You Won the dealer has more than 21")
-                print("1: Replay    2: Quit")
-                exit()
+                print("Here is the dealer's hand")
+                get_card_dealer(cards, dealer_hand)
+                print("-------------------------------------")
+                dealer_points = convert(dealer_hand, dealer_points)
+                time.sleep(1)
+
+                while True:
+                    
+                    if dealer_points > 21:
+                        print("You Won the dealer has more than 21")
+                        tprint("YOU WON")
+                        exit()
+
+                    if dealer_points <= 16:
+                        get_card_dealer(cards, dealer_hand)
+                        dealer_points = convert(dealer_hand, dealer_points)
+                        time.sleep(1)
+                    else:
+                        win = decision(points, dealer_points)
+
+                        if win:
+                            print(f"You won with {points} against the dealer's {dealer_points}")
+                            tprint("YOU WON")
+                            exit()
+                        else:
+                            print(f"You lost with {points} against the dealer's {dealer_points}")
+                            tprint("YOU LOST")
+                            exit()
         else:
             print("invalid answer")
 
@@ -105,7 +125,9 @@ def convert(hand, points):
     return points
 
 def decision(points, dealer_points):
-    if points > dealer_points:
+    if points == 21:
+        win = True   
+    elif points > dealer_points:
         win = True
         return win
     else:
