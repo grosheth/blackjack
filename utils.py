@@ -19,8 +19,8 @@ def play(cards):
     while True:
         print(f"you currently have {points}")
         print(f"The dealer has {dealer_points}")
-        print("1. Get another card.")
-        print("2. Stand with current cards.")
+        print("1. Call.")
+        print("2. Stay.")
         answer = input()
 
         if answer == "1":
@@ -66,7 +66,7 @@ def play(cards):
 
 
 def get_card_dealer(cards, dealer_hand):
-
+    time.sleep(2)
     dealer_hand = pop_card(cards, dealer_hand)
 
     if len(dealer_hand) < 2:
@@ -79,7 +79,7 @@ def get_card_dealer(cards, dealer_hand):
     return dealer_hand
 
 def get_card(cards, hand):
-
+    time.sleep(2)
     if len(hand) < 2:
         for i in range(2):
             hand = pop_card(cards, hand)
