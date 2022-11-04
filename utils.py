@@ -78,6 +78,7 @@ def get_card_dealer(cards, dealer_hand):
             tprint(dealer_hand[c],font="block",chr_ignore=True)
     return dealer_hand
 
+
 def get_card(cards, hand):
     time.sleep(2)
     if len(hand) < 2:
@@ -97,6 +98,7 @@ def pop_card(cards, hand):
     cards.pop(position)
     hand.append(card)
     return hand
+
 
 def convert(hand, points):
     if points > 0:
@@ -123,6 +125,7 @@ def convert(hand, points):
                     c = 1
             points += c
     return points
+
 
 def decision(points, dealer_points):
     if points == 21:
